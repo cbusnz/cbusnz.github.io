@@ -312,7 +312,7 @@ $.getJSON("data/Arboretum.geojson", function (data) {
 map = L.map("map", {
   zoom: 16,
   center: [-36.75250, 174.75665],
-  layers: [Mapbox, boundaries, markerClusters, highlight],
+  layers: [Mapbox, /*boundaries,*/ markerClusters, highlight],
   zoomControl: false,
   attributionControl: false
 });
