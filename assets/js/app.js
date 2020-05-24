@@ -24,7 +24,7 @@ $("#about-btn").click(function() {
 });
 
 $("#full-extent-btn").click(function() {
-  map.fitBounds(boundaries.getBounds());
+  map.fitBounds(Park_Extent.getBounds());
   $(".navbar-collapse.in").collapse("hide");
   return false;
 });
@@ -141,7 +141,7 @@ var highlightStyle = {
   radius: 20
 };
 
-var boundaries = L.geoJson(null, {
+var Park_Extent = L.geoJson(null, {
   style: function (feature) {
     return {
       color: "#ff3135",
@@ -153,14 +153,14 @@ var boundaries = L.geoJson(null, {
   onEachFeature: function (feature, layer) {
     boundarySearch.push({
       name: layer.feature.properties.BoroName,
-      source: "Eco Zones",
+      source: "Park Extents",
       id: L.stamp(layer),
       bounds: layer.getBounds()
     });
   }
 });
-$.getJSON("data/boundaries.geojson", function (data) {
-  boundaries.addData(data);
+$.getJSON("data/Park_Extent.geojson", function (data) {
+  Park_Extent.addData(data);
 });
 
 
@@ -312,7 +312,7 @@ $.getJSON("data/Arboretum.geojson", function (data) {
 map = L.map("map", {
   zoom: 16,
   center: [-36.75250, 174.75665],
-  layers: [Mapbox, /*boundaries,*/ markerClusters, highlight],
+  layers: [Mapbox, /*Park_Extent,*/ markerClusters, highlight],
   zoomControl: false,
   attributionControl: false
 });
@@ -401,7 +401,7 @@ var locateControl = L.control.locate({
   strings: {
     title: "My location",
     popup: "You are within {distance} {unit} from this point",
-    outsideMapBoundsMsg: "You seem located outside the boundaries of the map"
+    outsideMapBoundsMsg: "You seem located outside the Park_Extent of the map"
   },
   locateOptions: {
     maxZoom: 26,
@@ -431,7 +431,7 @@ var groupedOverlays = {
     "<img src='assets/img/tree.png' width='20' height='20'>&nbsp;Arboretum": arboretumLayer
   },
   "Reference": {
-    "Eco Zones": boundaries,
+    "Park Extents": Park_Extent,
     "Streams": streamLines
   }
 };
@@ -461,7 +461,7 @@ $(document).one("ajaxStop", function () {
   $("#loading").hide();
   sizeLayerControl();
   /* Fit map to boundary bounds 
-  map.fitBounds(boundaries.getBounds());
+  map.fitBounds(Park_Extent.getBounds());
   featureList = new List("features", {valueNames: ["feature-name"]});
   featureList.sort("feature-name", {order:"asc"}); 
 
@@ -525,7 +525,7 @@ $(document).one("ajaxStop", function () {
     },
     limit: 26
   });
-  boundariesBH.initialize();
+  Park_ExtentBH.initialize();
   naturetrailBH.initialize();
   arboretumBH.initialize();
   geonamesBH.initialize();
@@ -536,11 +536,11 @@ $(document).one("ajaxStop", function () {
     highlight: true,
     hint: false
   }, {
-    name: "Eco Zones",
+    name: "Park Extents",
     displayKey: "name",
-    source: boundariesBH.ttAdapter(),
+    source: Park_ExtentBH.ttAdapter(),
     templates: {
-      header: "<h4 class='typeahead-header'>Eco Zones</h4>"
+      header: "<h4 class='typeahead-header'>Park Extents</h4>"
     }
   }, {
     name: "Nature Trail",
@@ -566,7 +566,7 @@ $(document).one("ajaxStop", function () {
       header: "<h4 class='typeahead-header'><img src='assets/img/globe.png' width='25' height='25'>&nbsp;GeoNames</h4>"
     }
   }).on("typeahead:selected", function (obj, datum) {
-    if (datum.source === "Eco Zones") {
+    if (datum.source === "Park Extents") {
       map.fitBounds(datum.bounds);
     }
     if (datum.source === "Nature Trail") {
